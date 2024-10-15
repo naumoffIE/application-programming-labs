@@ -1,5 +1,7 @@
+import datetime
 import re
 import argparse
+import datetime as dt
 
 
 def parsing() -> str:
@@ -33,18 +35,24 @@ def separation_text(text: str) -> list[str]:
     return people
 
 
-def separation_birth(year: int, month: int, day: int) -> int:
+def convert_stodt(birthday_strings: list[str]) -> list[datetime.date]:
     """
     Check the condition of occurrence of birthdays
-    :param year:
-    :param month:
-    :param day:
-    :return:  1 if it fits
+    :param birthday_strings: a list of formatted strings
+    :return: list of dates converted from strings
     """
-    current_year = 2024
-    return (1983 <= year <= 1993) or \
-           (1984 <= year < current_year and month >= 9 and day >= 25) or \
-           (year == current_year and month <= 9 and day <= 25)
+    formatting = "%d.%m.%Y"
+    birth_dates = [dt.datetime.strptime(bd, formatting).date() for bd in birthday_strings]
+    return birth_dates
+
+
+def age_calculating(birthday: dt.date) -> int:
+    today = dt.date.today()
+    return today.year - birthday.year - ((today.month, today.day) < (birthday.month, birthday.day))
+
+
+def is_suitable_age(age: int) -> bool:
+    return 30 <= age <= 40
 
 
 def counting_birth(people: list[str]) -> int:
@@ -53,18 +61,19 @@ def counting_birth(people: list[str]) -> int:
     :return: the number of suitable dates
     """
     count = 0
-    for date_str in people:
-        year, month, day = map(int, date_str.split('.'))
-        count += separation_birth(year, month, day)
+    converted_birthdays = convert_stodt(people)
+    for i in converted_birthdays:
+        if is_suitable_age(age_calculating(i)):
+            count += 1
     return count
 
 
 def main():
     filename = parsing()
     text = open_file(filename)
-    separation = separation_text(text)
-    quantity = counting_birth(separation)
-    print('Количество людей возрастом от 30 до 40 лет:', quantity)
+    separated_text = separation_text(text)
+    quantity_of_suit_bdays = counting_birth(separated_text)
+    print('Количество людей возрастом от 30 до 40 лет:', quantity_of_suit_bdays)
 
 
 if __name__ == "__main__":
