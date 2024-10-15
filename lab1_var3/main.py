@@ -1,7 +1,6 @@
-import datetime
-import re
 import argparse
 import datetime as dt
+import re
 
 
 def parsing() -> str:
@@ -35,7 +34,7 @@ def separation_text(text: str) -> list[str]:
     return people
 
 
-def convert_stodt(birthday_strings: list[str]) -> list[datetime.date]:
+def convert_stodt(birthday_strings: list[str]) -> list[dt.date]:
     """
     Check the condition of occurrence of birthdays
     :param birthday_strings: a list of formatted strings
