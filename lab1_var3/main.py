@@ -13,10 +13,11 @@ def parsing() -> str:
     return args.file
 
 
-def open_file(namefile: str) -> str:
+def read_file(namefile: str) -> str:
     """
     Reading the contents of a file
-    :param namefile: The file name       :return: A string containing data from a file
+    :param namefile: The file name
+    :return: A string containing data from a file
     """
     with open(namefile, 'r', encoding='utf-8') as file:
         text = file.read()
@@ -69,7 +70,7 @@ def counting_birth(people: list[str]) -> int:
 
 def main():
     filename = parsing()
-    text = open_file(filename)
+    text = read_file(filename)
     separated_text = separation_text(text)
     quantity_of_suit_bdays = counting_birth(separated_text)
     print('Количество людей возрастом от 30 до 40 лет:', quantity_of_suit_bdays)
