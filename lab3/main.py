@@ -1,5 +1,7 @@
 import argparse
+
 import cv2
+
 from histogram_processing import calculate_histogram
 from histogram_processing import plot_histogram
 from work_with_images import concatenate_images
@@ -36,7 +38,6 @@ def main() -> None:
 
     print(f"Размер первого изображения: {image.shape[:2]}")
     print(f"Размер второго изображения: {concat_image.shape[:2]}")
-    print(f"Размер измененного первого изображения: {cv2.resize(image, (concat_image.shape[1], max(image.shape[0], concat_image.shape[0]))).shape[:2]}")
 
     histogram = calculate_histogram(image)
     plot_histogram(histogram, args.output_path)

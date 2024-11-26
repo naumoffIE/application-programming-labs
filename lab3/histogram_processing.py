@@ -1,7 +1,8 @@
-import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from typing import Tuple
+
+import cv2
 
 
 def calculate_histogram(image: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
