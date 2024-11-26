@@ -1,6 +1,7 @@
 import csv
-from icrawler.builtin import GoogleImageCrawler
 import os
+
+from icrawler.builtin import GoogleImageCrawler
 
 
 def download_images(keyword: str, save_dir: str, num_images: int) -> None:

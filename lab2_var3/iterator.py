@@ -1,6 +1,7 @@
 import csv
-import cv2
 from typing import Optional, Any
+
+import cv2
 
 
 class ImageIterator:
