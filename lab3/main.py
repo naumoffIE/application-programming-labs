@@ -32,9 +32,24 @@ def main() -> None:
     Основная функция программы.
     """
     args = parsing()
+    try:
+        image = read_image(args.input_path)
+        print("Изображение успешно загружено!")
+    except FileNotFoundError as error:
+        print(f"Ошибка: {error}")
+        image = None
 
-    image = read_image(args.input_path)
-    concat_image = read_image(args.concat_path)
+    if image is not None:
+        pass
+    try:
+        concat_image = read_image(args.concat_path)
+        print("Изображение успешно загружено!")
+    except FileNotFoundError as error:
+        print(f"Ошибка: {error}")
+        concat_image = None
+
+    if concat_image is not None:
+        pass
 
     print(f"Размер первого изображения: {image.shape[:2]}")
     print(f"Размер второго изображения: {concat_image.shape[:2]}")
