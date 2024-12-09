@@ -1,22 +1,27 @@
 import sys
 
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, \
     QFileDialog, QVBoxLayout, QWidget, QMessageBox
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
 
 from iterator import ImageIterator
 
 
 class MainWindow(QMainWindow):
+    """
+    Initializes a main application window.
+    """
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle("window application for viewing images")
         self.setFixedSize(1280, 920)
-        self.setStyleSheet("""QMainWindow {
-                background-color: #f2dcdf; /* Цвет фона внутри окна */
-            }
-        """)
+        self.setStyleSheet(
+            """QMainWindow {
+                background-color: #f2dcdf;
+                            }
+            """)
         self.image_label = QLabel(self)
         self.image_label.resize(1080, 700)
         self.image_label.setAlignment(Qt.AlignCenter)
@@ -46,31 +51,40 @@ class MainWindow(QMainWindow):
 
         self.iterator = None
 
-    def select_csv_file(self):
-        filename, _ = QFileDialog.getOpenFileName(self, "Выберите CSV файл с путями к изображениям", "", "CSV Files ("
-                                                                                                         "*.csv)")
+    def select_csv_file(self) -> None:
+        """
+        Opens a file dialog to select a CSV file containing image paths and initializes the image iterator.
+        """
+        filename, _ = QFileDialog.getOpenFileName(self, "Choose CSV file with paths to the images", "", "CSV Files ("
+                                                                                                        "*.csv)")
         if filename:
             self.iterator = ImageIterator(filename)
             pixmap = QPixmap(self.iterator.current())
             self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.KeepAspectRatio))
 
-    def next_image(self):
+    def next_image(self) -> None:
+        """
+        Displays the next image in the iterator.
+        """
         if self.iterator and self.iterator.image_paths:
             try:
                 next_image_path = self.iterator.__next__()
                 pixmap = QPixmap(next_image_path)
                 self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.KeepAspectRatio))
             except StopIteration:
-                QMessageBox.information(self, "Конец списка", "Вы достигли конца списка изображений.")
+                QMessageBox.information(self, "DEnd of List", "You have reached the end of the image list.")
 
-    def previous_image(self):
+    def previous_image(self) -> None:
+        """
+        Displays the previous image in the iterator.
+        """
         if self.iterator is not None:
             try:
                 prev_image_path = self.iterator.previous()
                 pixmap = QPixmap(prev_image_path)
                 self.image_label.setPixmap(pixmap.scaled(self.image_label.size(), Qt.KeepAspectRatio))
             except StopIteration:
-                QMessageBox.information(self, "Начало списка", "Вы достигли начала списка изображений.")
+                QMessageBox.information(self,  "Start of List", "You have reached the start of the image list.")
 
 
 def main():
@@ -80,7 +94,7 @@ def main():
         window.show()
         sys.exit(app.exec_())
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Error acquired: {e}")
 
 
 if __name__ == "__main__":
