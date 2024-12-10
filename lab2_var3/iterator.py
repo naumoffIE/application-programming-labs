@@ -18,6 +18,7 @@ class ImageIterator:
         """
         with open(annotation_file, newline='', encoding='utf-8') as file:
             self.image_paths = [row[0] for row in csv.reader(file)][1:]
+            print(self.image_paths)
         self.index = 0
 
     def __iter__(self) -> 'ImageIterator':

@@ -16,9 +16,10 @@ def parsing() -> argparse.Namespace:
              - num_images: Number of images to download
     """
     parser = argparse.ArgumentParser(description="Download images and create an iterator for a specified class.")
-    parser.add_argument("--keyword", type=str, default="bird", help="Keyword for image search")
+    parser.add_argument("--keyword", type=str, default="birds", help="Keyword for image search")
     parser.add_argument("--save_dir", type=str, default="images", help="Directory to save downloaded images")
-    parser.add_argument("--annotation_file", type=str, default="images/annotation.csv", help="Path to the annotation "
+    parser.add_argument("--annotation_file", type=str, default="images/annotation.csv", help="Path to the "
+                                                                                             "annotation "
                                                                                              "CSV file")
     parser.add_argument("--num_images", type=int, default=50, help="Number of images to download (default: 50)")
     args = parser.parse_args()
@@ -27,16 +28,18 @@ def parsing() -> argparse.Namespace:
 
 def main():
     args = parsing()
+    try:
+        download_images(args.keyword, args.save_dir, args.num_images)
+        create_annotation_csv(args.annotation_file, args.save_dir)
+        iterator = ImageIterator(args.annotation_file)
 
-    download_images(args.keyword, args.save_dir, args.num_images)
-    create_annotation_csv(args.annotation_file, args.save_dir)
-    iterator = ImageIterator(args.annotation_file)
-
-    for image in iterator:
-        if image is not None:
-            print("Image downloaded!")
-        else:
-            print("Failed to download an image.")
+        for image in iterator:
+            if image is not None:
+                print("Image downloaded!")
+            else:
+                print("Failed to download an image.")
+    except Exception as ex:
+        print(ex)
 
 
 if __name__ == "__main__":

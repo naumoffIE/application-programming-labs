@@ -1,7 +1,7 @@
 import csv
 import os
 
-from icrawler.builtin import GoogleImageCrawler
+from icrawler.builtin import BingImageCrawler
 
 
 def download_images(keyword: str, save_dir: str, num_images: int) -> None:
@@ -13,7 +13,7 @@ def download_images(keyword: str, save_dir: str, num_images: int) -> None:
     :param: num_images: Maximum number of images to download.
     :return: None
     """
-    crawler = GoogleImageCrawler(storage={"root_dir": save_dir})
+    crawler = BingImageCrawler(storage={"root_dir": save_dir})
     crawler.crawl(keyword=keyword, max_num=num_images)
 
 
@@ -33,5 +33,5 @@ def create_annotation_csv(annotation_file: str, save_dir: str) -> None:
             for name in files:
                 if name.lower().endswith(('.png', '.jpg', '.jpeg')):
                     abs_path = os.path.abspath(os.path.join(root, name))
-                    rel_path = os.path.relpath(abs_path, start=save_dir)
+                    rel_path = os.path.relpath(abs_path)
                     writer.writerow([abs_path, rel_path])
